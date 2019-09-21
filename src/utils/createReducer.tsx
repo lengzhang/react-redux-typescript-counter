@@ -1,18 +1,17 @@
-import { Action } from "redux";
+import { Action, AnyAction } from "redux";
 
-type Handlers<State, Types extends string, Actions extends Action<Types>> = {
-  readonly [Type in Types]: (state: State, action: Actions) => State
+type Reducer<S, A> = (state: S, action: A) => S;
+type Handlers<S, A extends Action = AnyAction> = {
+  [T in A["type"]]: Reducer<S, A>
 };
-
-export const createReducer = <
-  State,
-  Types extends string,
-  Actions extends Action<Types>
->(
-  initialState: State,
-  handlers: Handlers<State, Types, Actions>
-) => (state = initialState, action: Actions) => {
-  return handlers.hasOwnProperty(action.type)
-    ? handlers[action.type as Types](state, action)
-    : state;
+export const createReducer = <S, A extends Action<A["type"]> = AnyAction>(
+  initialState: S,
+  handlers: Handlers<S, A>
+) => (state: S | undefined, action: A) => {
+  if (state === undefined) state = initialState;
+  if (handlers.hasOwnProperty(action.type)) {
+    return handlers[action.type](state, action);
+  } else {
+    return state;
+  }
 };

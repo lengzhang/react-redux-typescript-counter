@@ -1,7 +1,20 @@
-import { Action as ReduxAction } from "redux";
-import { INCREASE, DECREASE } from "../constants";
+import { INCREASE, DECREASE, SET_COUNTER } from "../constants";
+
 export interface State {
-  counter: number;
+  readonly counter: number;
 }
-export type Type = typeof INCREASE | typeof DECREASE;
-export type Action = ReduxAction<Type>;
+export type Types = typeof INCREASE | typeof DECREASE | typeof SET_COUNTER;
+
+export interface IncreaseAction {
+  type: typeof INCREASE;
+}
+export interface DecreaseAction {
+  type: typeof DECREASE;
+}
+
+export interface SetCounterAction {
+  type: typeof SET_COUNTER;
+  payload: { counter: number };
+}
+
+export type Actions = IncreaseAction | DecreaseAction | SetCounterAction;
