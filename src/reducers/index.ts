@@ -25,7 +25,7 @@ const setCounter = (state: State, action: SetCounterAction): State => {
   return { ...state, counter: action.payload.counter };
 };
 
-const reducer = createReducer<State, Actions>(initialState, {
+const reducer = createReducer<State, Types, Actions>(initialState, {
   [INCREASE]: increase,
   [DECREASE]: decrease,
   [SET_COUNTER]: setCounter
